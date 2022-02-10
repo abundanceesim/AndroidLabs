@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_linear);
+        setContentView(R.layout.activity_main_grid);
 
         TextView myText = findViewById(R.id.text);//brings the textView from XML to Java
         myText.setText(R.string.welcome_message);
@@ -47,11 +47,6 @@ public class MainActivity extends AppCompatActivity {
             snack.show();
 
         });
-
-
-
-
-
 
     }
 }
