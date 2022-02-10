@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">Android Labs | ca</string>
+    <string name="app_name">Android Labs | us</string>
     <string name="hello_message">Hello World!</string>
-    <string name="ButtonText">I\'m a button</string>
+    <string name="welcome_message">Look at my GUI</string>
+    <string name="ButtonText">CLICK HERE</string>
+    <string name="hintText">Type here</string>
+    <string name="cbox">Check this out!</string>
+    <string name="switchText">Switch on/off</string>
+    <string name="toast_message">Here is more information</string>
+    <string name="switchOn">on</string>
+    <string name="switchOff">off</string>
+
 </resources>
