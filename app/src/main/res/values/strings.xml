@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">Android Labs | us</string>
-    <string name="hello_message">Hello World!</string>
-    <string name="welcome_message">Look at my GUI</string>
-    <string name="ButtonText">CLICK HERE</string>
-    <string name="hintText">Type here</string>
-    <string name="cbox">Check this out!</string>
-    <string name="switchText">Switch on/off</string>
-    <string name="toast_message">Here is more information</string>
-    <string name="switchOn">on</string>
-    <string name="switchOff">off</string>
+
+    <string name="email_text">Enter your email address:</string>
+    <string name="email_hint">Type email here</string>
+    <string name="password_text">Type your password:</string>
+    <string name="password_hint"> </string>
+
+    <string name="profile_text">Your profile</string>
+    <string name="profile_name">Your name:</string>
+    <string name="profile_name_editText">Enter your name</string>
+    <string name="profile_email">Your email:</string>
+    <string name="profile_email_editText">Enter your email</string>
+    <string name="profile_picture">Your picture:</string>
+    <string name="picture_instruction">Click the button above to take a picture</string>
+
 
 </resources>
