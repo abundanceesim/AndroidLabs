@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             editor.apply();
             //editor.commit();  //was advised by compiler to use apply() instead.
-            Toast.makeText(MainActivity.this, "information saved", Toast.LENGTH_LONG).show();//saves the edit
+            Toast.makeText(MainActivity.this, "information saved", Toast.LENGTH_LONG).show();//indicator that information has been saved
 
             //Go to Profile page when button is clicked.
             Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);

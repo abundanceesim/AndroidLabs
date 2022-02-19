@@ -20,6 +20,14 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String TAG = "PROFILE_ACTIVITY";
     ImageButton imageButton;
     ImageView imgView;
+    public static final String ON_ACTIVITY_RESULT = "onActivityResult()";
+    public static final String ON_CREATE = "onCreate()";
+    public static final String ON_START = "onStart()";
+    public static final String ON_PAUSE = "onPause()";
+    public static final String ON_RESUME = "onResume()";
+    public static final String ON_DESTROY = "onDestroy()";
+    public static final String ON_STOP = "onStop()";
+
 
     ActivityResultLauncher<Intent> myPictureTakerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult()
@@ -27,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
 
-                    Log.e(TAG, "In function: onActivityResult()");
+                    Log.e(TAG, "In function: " + ON_ACTIVITY_RESULT);
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
@@ -44,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        Log.e(TAG, "In function: onCreate()");
+        Log.e(TAG, "In function: " + ON_CREATE);
 
         imageButton = findViewById(R.id.imageButton);
 
@@ -57,10 +65,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         imgView = findViewById( R.id.imageButton);
 
-        Intent fromMain = getIntent();      //latest edit
-        String input = fromMain.getStringExtra("Email");      //latest edit
-        EditText editEmail = findViewById(R.id.profile_email_editText);     //--last modification
-        editEmail.setText(input);     //latest edit
+        Intent fromMain = getIntent();
+        String input = fromMain.getStringExtra("Email");
+        EditText editEmail = findViewById(R.id.profile_email_editText);
+        editEmail.setText(input);
         if ( !input.isEmpty()) {
             editEmail.setText(input);
         }
@@ -70,30 +78,30 @@ public class ProfileActivity extends AppCompatActivity {
    @Override //screen is visible but not responding
     protected void onStart() {
         super.onStart();
-        Log.e(TAG, "In function: onStart()");
+        Log.e(TAG, "In function: " + ON_START);
     }
 
     @Override //screen is visible but not responding
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "In function: onResume()");
+        Log.e(TAG, "In function: " + ON_RESUME);
     }
 
     @Override //screen is visible but not responding
     protected void onPause() {
         super.onPause();
-        Log.e(TAG, "In function: onPause()");
+        Log.e(TAG, "In function: " + ON_PAUSE);
     }
 
     @Override //not visible
     protected void onStop() {
         super.onStop();
-        Log.e(TAG, "In function: onStop()");
+        Log.e(TAG, "In function: " + ON_STOP);
     }
 
     @Override  //garbage collected
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "In function: onDestroy()");
+        Log.e(TAG, "In function: " + ON_DESTROY);
     }
 }
