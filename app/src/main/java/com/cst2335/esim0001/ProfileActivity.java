@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.content.Intent;
@@ -73,6 +74,12 @@ public class ProfileActivity extends AppCompatActivity {
             editEmail.setText(input);
         }
 
+        //Lab 4 update
+        Button chatButton = findViewById(R.id.chatButton);
+        chatButton.setOnClickListener( (click) -> {
+            Intent chatPage = new Intent(ProfileActivity.this,   ChatRoomActivity.class  );
+            startActivity(chatPage);
+        });
     }
 
    @Override //screen is visible but not responding

@@ -62,4 +62,10 @@
         android:layout_height="wrap_content"
         android:text="@string/picture_instruction"
         />
+
+    <Button
+        android:id="@+id/chatButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chat_ButtonText"/>
 </LinearLayout>

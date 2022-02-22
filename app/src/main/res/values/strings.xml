@@ -15,4 +15,10 @@
     <string name="picture_instruction">Click the button above to take a picture</string>
 
 
+    <string name="chat_ButtonText">Go to Chat</string>
+    <string name="sendButton_Text">Send</string>
+    <string name="chatMessage_hint">Type here</string>
+    <string name="receiveButton_Text">Receive</string>
+
+
 </resources>

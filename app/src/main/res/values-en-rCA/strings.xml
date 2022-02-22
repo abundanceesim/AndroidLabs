@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Android Labs | ca</string>
-
     <string name="email_text">Input your email address:</string>
     <string name="email_hint">Type email here</string>
     <string name="password_text">Input your password:</string>
@@ -14,4 +13,10 @@
     <string name="profile_email_editText">Input your email</string>
     <string name="profile_picture">Your photograph:</string>
     <string name="picture_instruction">Tap the button above to capture your picture</string>
+
+
+    <string name="chat_ButtonText">Proceed to Chat</string>
+    <string name="sendButton_Text">Send</string>
+    <string name="chatMessage_hint">Type here</string>
+    <string name="receiveButton_Text">Receive</string>
 </resources>
