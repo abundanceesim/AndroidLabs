@@ -14,9 +14,8 @@
     <string name="profile_picture">Your photograph:</string>
     <string name="picture_instruction">Tap the button above to capture your picture</string>
 
-
     <string name="chat_ButtonText">Proceed to Chat</string>
     <string name="sendButton_Text">Send</string>
-    <string name="chatMessage_hint">Type here</string>
+    <string name="chatMessage_hint">Input text here</string>
     <string name="receiveButton_Text">Receive</string>
 </resources>
