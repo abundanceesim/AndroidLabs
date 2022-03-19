@@ -3,6 +3,9 @@ package com.cst2335.esim0001;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,14 +26,27 @@ public class ChatRoomActivity extends AppCompatActivity {
     EditText message;
     Button sendButton;
     Button receiveButton;
-    ChatAdapter myAdapter;   //<<cannot be anonymous<<
+    ChatAdapter myAdapter;
     ArrayList<Message> messages = new ArrayList<Message>();  //array list that would contain messages.
+    //Create an OpenHelper to store data:
+    MyOpenHelper myOpener;
+    SQLiteDatabase theDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
+        //initialize it in onCreate
+        myOpener = new MyOpenHelper( this );
+        //open the database:
+        theDatabase = myOpener.getWritableDatabase();
+
+        //load from the database:
+        Cursor results = theDatabase.rawQuery( "Select * from " + MyOpenHelper.TABLE_NAME + ";", null );//no arguments to the query
+        printCursor(results, theDatabase.getVersion());
+
+        //list view created for holding messages.
         ListView myList = findViewById(R.id.listView);
         myList.setAdapter( myAdapter = new ChatAdapter());
 
@@ -46,7 +62,20 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             //Message thisRow = messages.get(position);
             if ( !typedMessage.isEmpty()) {
-                messages.add(new Message(typedMessage, "send"));
+                //insert into database:
+                ContentValues newRow = new ContentValues();// like intent or Bundle
+
+                //Message column.
+                newRow.put(MyOpenHelper.COL_MESSAGE, typedMessage);
+
+                //Send or receive column.
+                //0 represents false in this column, this indicates that a message was received.
+                newRow.put(MyOpenHelper.COL_SEND_RECEIVE, 1);
+
+                //Insert columns into the database.
+                long id = theDatabase.insert(MyOpenHelper.TABLE_NAME, null, newRow); //returns the id
+
+                messages.add(new Message(typedMessage, true, id));
 
                 message.setText(""); //clear any text from the EditText.
 
@@ -63,7 +92,20 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             //Message thisRow = messages.get(position);
             if ( !typedMessage.isEmpty()) {
-                messages.add(new Message(typedMessage, "receive"));
+                //insert into database:
+                ContentValues newRow = new ContentValues();// like intent or Bundle
+
+                //Message column.
+                newRow.put(MyOpenHelper.COL_MESSAGE, typedMessage);
+
+                //Send or receive column.
+                //0 represents false in this column, this indicates that a message was received.
+                newRow.put(MyOpenHelper.COL_SEND_RECEIVE, 0);
+
+                //Insert columns into the database.
+                long id = theDatabase.insert(MyOpenHelper.TABLE_NAME, null, newRow); //returns the id
+
+                messages.add(new Message(typedMessage, false, id));
 
                 message.setText("");   //clear any text from the EditText.
 
@@ -73,18 +115,24 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
         });
 
-        /*Listener for listview entries.*/
+        /*Long click listener for listview entries.*/
         myList.setOnItemLongClickListener( (p, b, pos, id) -> {
+            Message clickedMessage = messages.get(pos);
+
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to delete this?")
 
                     .setMessage("The selected row is: " + pos + "\nThe database id is: " + id)
-
+                    /*Remove row from list and also delete it from the database.*/
                     .setPositiveButton("Yes", (click, arg) -> {
+                        //delete row from the database.
+                        theDatabase.delete(MyOpenHelper.TABLE_NAME,
+                                MyOpenHelper.COL_ID +" = ?", new String[] { Long.toString(clickedMessage.getId())  });
+
                         messages.remove(pos);
                         myAdapter.notifyDataSetChanged();
                     })
-
+                    //if the user clicks No, no change should occur.
                     .setNegativeButton("No", (click, arg) -> { })
 
                     //Display the Alert Dialog.
@@ -92,8 +140,8 @@ public class ChatRoomActivity extends AppCompatActivity {
             return true;
         });
 
-
     }
+
 
     private class ChatAdapter extends BaseAdapter {
 
@@ -104,7 +152,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             return thisRow.messageTyped;
         }
 
-        public long getItemId(int position) { return (long) position; }
+        public long getItemId(int position) { return (long) position; }  //public long getItemId(int position) { return (long) position; }
 
         public View getView(int position, View old, ViewGroup parent)
         {
@@ -125,7 +173,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             Message thisRow = messages.get(position);
             //if the value for the type of message is "send", return the send view, otherwise return the receive view.
-            if (thisRow.sendOrReceive.equals("send"))
+            if (thisRow.isSent)
                 return sendView;
 
 
@@ -136,20 +184,78 @@ public class ChatRoomActivity extends AppCompatActivity {
     /*Message class would be used for creating new messages and adding them to the Array List.*/
     public class Message{
         String messageTyped;
-        String sendOrReceive; //String to show whether message is being sent, or received.
+        boolean isSent; //boolean to show whether message is being sent, or received.
+        long id;
 
-        public Message(String messageTyped, String sendOrReceive) {
+        public Message(String messageTyped, boolean isSent, long _id) {
             this.messageTyped = messageTyped;
-            this.sendOrReceive = sendOrReceive;
+            this.isSent = isSent;
+            this.id = _id;
         }
 
         public String getMessageTyped() {
             return messageTyped;
         }
 
-        public String getSendOrReceive() {
-            return sendOrReceive;
+        public boolean getIsSent() {
+            return isSent;
         }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+    }
+
+    /*
+    This function prints the cursor and also logs the cursor information for debugging purposes.
+     */
+    public Cursor printCursor( Cursor c, int version){
+
+         //Convert column names to indices which can be used in displaying the items.
+        int idIndex = c.getColumnIndex( MyOpenHelper.COL_ID );
+        int  messageIndex = c.getColumnIndex( MyOpenHelper.COL_MESSAGE);
+        int sOrRIndex = c.getColumnIndex( MyOpenHelper.COL_SEND_RECEIVE);
+
+        int rowCount = c.getCount();
+        int columnCount = c.getColumnCount();
+
+        //Logs
+        Log.i(TAG, "Database version: " + version);
+        Log.i(TAG, "Row count: " + rowCount);
+        Log.i(TAG, "Column count: " + columnCount);
+
+        Log.i(TAG, "Column Names: ");
+
+        //for loop to print column names
+        for(int i = 0; i < columnCount; i++){
+            String columnName = c.getColumnName(i);
+            //String columnNumber = Integer.toString(i);
+            Log.i(TAG, "Column " + (i + 1) + ": " + columnName);
+        }
+
+        while( c.moveToNext() ) //returns false if no more data
+        {
+            int id = c.getInt(idIndex);
+            String message = c.getString( messageIndex );
+            int isSent = c.getInt(sOrRIndex);
+
+            //integers 1 and 0 are used to represent the boolean values "true" and "false".
+            switch(isSent){
+                case 1:
+                    //populate array list with messages already stored in the database.
+                    messages.add( new Message( message, true, id ));
+                    break;
+                case 0:
+                    //populate array list with messages already stored in the database.
+                    messages.add( new Message( message, false, id ));
+                    break;
+            }
+        }
+        return c;  //return the Cursor.
     }
 
 }
