@@ -19,6 +19,8 @@
     <string name="sendButton_Text">Send</string>
     <string name="chatMessage_hint">Type here</string>
     <string name="receiveButton_Text">Receive</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

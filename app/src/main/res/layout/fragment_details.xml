@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".DetailsFragment"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/MessageHere_lab6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Message Here"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/IDText_lab6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID="
+            app:layout_constraintTop_toBottomOf="@id/MessageHere_lab6"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_lab6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Is a Send Message"
+            app:layout_constraintTop_toBottomOf="@id/IDText_lab6"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/hideButton_lab6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hide"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+ </FrameLayout>

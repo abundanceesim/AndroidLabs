@@ -2,8 +2,11 @@ package com.cst2335.esim0001;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,11 +36,21 @@ public class ChatRoomActivity extends AppCompatActivity {
     //Create an OpenHelper to store data:
     MyOpenHelper myOpener;
     SQLiteDatabase theDatabase;
+    //lab 6
+    boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
+
+        //Lab 6
+        isTablet = true;
+
+        FrameLayout frame1 = findViewById(R.id.frame1);
+        if(frame1 == null){
+            isTablet = false;
+        }
 
         //initialize it in onCreate
         myOpener = new MyOpenHelper( this );
@@ -115,16 +130,57 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
         });
 
-        /*Long click listener for listview entries.*/
+        //lab 6
+        myList.setOnItemClickListener( (list, view, position, id) -> {
+            Message clickedMessage = messages.get(position);
+            id = clickedMessage.getId();
+            String typedMessage = clickedMessage.messageTyped;
+            boolean isSend = clickedMessage.getIsSent();
+
+            //CheckBox checkBox = findViewById(R.id.checkbox_lab6);
+            DetailsFragment detailsFragment = new DetailsFragment();
+            if(isTablet == true){ //If device is tablet
+                //DetailsFragment detailsFragment = new DetailsFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame1, detailsFragment);    // add Fragment
+                ft.commit();
+            }
+            if(isTablet == false){ //If device is phone
+                Intent goToEmptyActivity = new Intent(ChatRoomActivity.this, EmptyActivity.class);
+                goToEmptyActivity.putExtra("message", typedMessage);
+                goToEmptyActivity.putExtra("id", id);
+                goToEmptyActivity.putExtra("isSent", isSend); //send data to EmptyActivity.
+
+                startActivity(goToEmptyActivity);
+            }
+            //Send data to the Fragment
+            Bundle args = new Bundle();
+            args.putString("message", typedMessage);
+            args.putLong("id", id);
+            args.putBoolean("isSent", isSend);
+            detailsFragment.setArguments(args);
+
+        } );
+
+
         myList.setOnItemLongClickListener( (p, b, pos, id) -> {
             Message clickedMessage = messages.get(pos);
+            id = clickedMessage.getId();
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to delete this?")
 
                     .setMessage("The selected row is: " + pos + "\nThe database id is: " + id)
-                    /*Remove row from list and also delete it from the database.*/
+                    //Remove row from list and also delete it from the database.
                     .setPositiveButton("Yes", (click, arg) -> {
+
+                        if(isTablet == true){
+                            //DetailsFragment detailsFragment = new DetailsFragment();
+                            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame1);
+                            if(fragment != null)
+                                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                        }
+
                         //delete row from the database.
                         theDatabase.delete(MyOpenHelper.TABLE_NAME,
                                 MyOpenHelper.COL_ID +" = ?", new String[] { Long.toString(clickedMessage.getId())  });
@@ -231,10 +287,10 @@ public class ChatRoomActivity extends AppCompatActivity {
         Log.i(TAG, "Column Names: ");
 
         //for loop to print column names
-        for(int i = 0; i < columnCount; i++){
+        for(int i = 1; i < columnCount; i++){   //for(int i = 0; i < columnCount; i++) would include the _id column, which is not needed in this case.
             String columnName = c.getColumnName(i);
             //String columnNumber = Integer.toString(i);
-            Log.i(TAG, "Column " + (i + 1) + ": " + columnName);
+            Log.i(TAG, "Column " + (i) + ": " + columnName); //Log.i(TAG, "Column " + (i + 1) + ": " + columnName);
         }
 
         while( c.moveToNext() ) //returns false if no more data
