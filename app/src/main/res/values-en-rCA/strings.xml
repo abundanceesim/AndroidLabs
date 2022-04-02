@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Android Labs | ca</string>
+    <string name="app_name">Android Labs</string>
     <string name="email_text">Input your email address:</string>
     <string name="email_hint">Type email here</string>
     <string name="password_text">Input your password:</string>
@@ -18,4 +18,6 @@
     <string name="sendButton_Text">Send</string>
     <string name="chatMessage_hint">Input text here</string>
     <string name="receiveButton_Text">Receive</string>
+
+    <string name="toolbar_ButtonText">Proceed to Toolbar page</string>
 </resources>

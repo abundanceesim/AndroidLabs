@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidLabs">
         <activity
+            android:name=".TestToolbar"
+            android:theme="@style/Theme.AndroidLabs.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".EmptyActivity"
             android:exported="false" />
         <activity

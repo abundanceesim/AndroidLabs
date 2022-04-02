@@ -21,6 +21,8 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String TAG = "PROFILE_ACTIVITY";
     ImageButton imageButton;
     ImageView imgView;
+    Button chatButton;
+    Button toolBarButton; //Lab 7 update
     public static final String ON_ACTIVITY_RESULT = "onActivityResult()";
     public static final String ON_CREATE = "onCreate()";
     public static final String ON_START = "onStart()";
@@ -75,11 +77,20 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         //Lab 4 update
-        Button chatButton = findViewById(R.id.chatButton);
+        chatButton = findViewById(R.id.chatButton);
         chatButton.setOnClickListener( (click) -> {
             Intent chatPage = new Intent(ProfileActivity.this,   ChatRoomActivity.class  );
             startActivity(chatPage);
         });
+
+        //Lab 7 update
+        toolBarButton = findViewById(R.id.goToToolbar);
+        toolBarButton.setOnClickListener( (click) -> {
+            Intent toolBarPage = new Intent(ProfileActivity.this,   TestToolbar.class  );
+            startActivity(toolBarPage);
+        });
+
+
     }
 
    @Override //screen is visible but not responding
